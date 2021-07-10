@@ -1,0 +1,42 @@
+# This version must match the MAKE_DC_VERSION value below
+version: "3"
+
+volumes:
+  pgdata:
+
+networks:
+  postgres:
+    driver: bridge
+
+services:
+
+  openmaptiles-tools:
+    image: "openmaptiles/openmaptiles-tools:${TOOLS_VERSION}"
+    env_file: .env
+    environment:
+      # Must match the version of this file (first line)
+      # download-osm will use it when generating a composer file
+      MAKE_DC_VERSION: "3"
+      # Allow DIFF_MODE, MIN_ZOOM, and MAX_ZOOM to be overwritten from shell
+      DIFF_MODE: ${DIFF_MODE}
+      MIN_ZOOM: ${MIN_ZOOM}
+      MAX_ZOOM: ${MAX_ZOOM}
+      #Provide BBOX from *.bbox file if exists, else from .env
+      BBOX: ${BBOX}
+      # Imposm configuration file describes how to load updates when enabled
+      IMPOSM_CONFIG_FILE: ${IMPOSM_CONFIG_FILE}
+      # Which files to use during import-borders processing
+      BORDERS_CLEANUP_FILE: ${BORDERS_CLEANUP_FILE}
+      BORDERS_PBF_FILE: ${BORDERS_PBF_FILE}
+      BORDERS_CSV_FILE: ${BORDERS_CSV_FILE}
+      # Control import-sql processes
+      MAX_PARALLEL_PSQL: ${MAX_PARALLEL_PSQL}
+    networks:
+      - postgres
+    volumes:
+      - .:/tileset
+      - ./data:/import
+      - ./data:/export
+      - ./build/sql:/sql
+      - ./build:/mapping
+      - ./cache:/cache
