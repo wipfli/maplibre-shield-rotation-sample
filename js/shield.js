@@ -16,8 +16,8 @@ function initShields(map) {
   shields["US:I"] = {
     backgroundImage: shieldImages.shield40_us_interstate,
     textColor: "white",
-    font2: "bold 44pt Arial",
-    font3: "bold 30pt Arial",
+    font2: "bold 52px Arial",
+    font3: "bold 38px Arial",
     textX: 0.5,
     textY: 0.56,
   };
@@ -25,8 +25,8 @@ function initShields(map) {
   shields["US:US"] = {
     backgroundImage: shieldImages.shield40_us_us,
     textColor: "black",
-    font2: "bold 40pt Arial",
-    font3: "bold 26pt Arial",
+    font2: "bold 56px Arial",
+    font3: "bold 38px Arial",
     textX: 0.5,
     textY: 0.56,
   };
@@ -34,8 +34,8 @@ function initShields(map) {
   shields["US:US:Historic"] = {
     backgroundImage: shieldImages.shield40_us_us,
     textColor: "black",
-    font2: "bold 44pt Arial",
-    font3: "bold 30pt Arial",
+    font2: "bold 56px Arial",
+    font3: "bold 38px Arial",
     textX: 0.5,
     textY: 0.56,
     colorLighten: "#613214",
@@ -44,8 +44,8 @@ function initShields(map) {
   shields["US:PA"] = {
     backgroundImage: shieldImages.shield40_us_pa,
     textColor: "black",
-    font2: "bold 40pt Arial",
-    font3: "bold 28pt Arial",
+    font2: "bold 52px Arial",
+    font3: "bold 38px Arial",
     textX: 0.5,
     textY: 0.6,
   };
@@ -53,8 +53,8 @@ function initShields(map) {
   shields["US:PA:Turnpike"] = {
     backgroundImage: shieldImages.shield40_us_pa_turnpike,
     textColor: "white",
-    font2: "bold 32pt Arial",
-    font3: "bold 22pt Arial",
+    font2: "bold 52px Arial",
+    font3: "bold 38px Arial",
     textX: 0.5,
     textY: 0.56,
   };
@@ -153,9 +153,9 @@ function missingIconLoader(map, e) {
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         if (ref.length <= 2) {
-          ctx.font = "bold 11pt Arial";
+          ctx.font = "bold 16px Arial";
         } else {
-          ctx.font = "bold 7pt Arial";
+          ctx.font = "bold 10px Arial";
         }
         ctx.fillText(ref, width * 0.5, height * 0.58, width);
       }
