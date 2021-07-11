@@ -180,10 +180,11 @@ function missingIconLoader(map, e) {
     switch (network) {
       default: {
         ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, 20, 20);
-        ctx.lineWidth = 2;
-        ctx.strokeRect(0, 0, 20, 20);
-        ctx.fillText(ref, width * 0.5, height * 0.58, width);
+        ctx.fillRect(0, 0, 80, 80);
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(0, 0, 80, 80);
+//        ctx.fillText(ref, width * 0.5, height * 0.58, width);
       }
     }
   }
