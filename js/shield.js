@@ -1,9 +1,20 @@
 function loadShield(ctx, shield) {
-  var imgData = ctx.createImageData(shield.data.width, shield.data.height);
+
+  var scaleCanvas = document.createElement("canvas");
+  var scaleCtx = scaleCanvas.getContext("2d");
+  var imgData = scaleCtx.createImageData(shield.data.width, shield.data.height);
+
   for (i = 0; i < shield.data.data.length; i++) {
     imgData.data[i] = shield.data.data[i];
   }
-  ctx.putImageData(imgData, 0, 0);
+  scaleCtx.putImageData(imgData, 0, 0);
+
+  var scaleW = 80/shield.data.width;
+  var scaleH = 80/shield.data.height;
+
+  ctx.scale(scaleW,scaleH);
+  ctx.drawImage(scaleCanvas, 0, 0);
+  ctx.scale(1/scaleW,1/scaleH);
 }
 
 var shields = {};
@@ -30,7 +41,7 @@ function initShields(map) {
     padding: {
       left: 10,
       right: 10,
-      top: -10,
+      top: 0,
       bottom: 10
     },
   };
@@ -41,7 +52,7 @@ function initShields(map) {
     padding: {
       left: 10,
       right: 10,
-      top: -10,
+      top: 0,
       bottom: 10
     },
     colorLighten: "#613214",
@@ -53,7 +64,7 @@ function initShields(map) {
     padding: {
       left: 10,
       right: 10,
-      top: -10,
+      top: 0,
       bottom: 10
     },
   };
@@ -64,7 +75,7 @@ function initShields(map) {
     padding: {
       left: 10,
       right: 10,
-      top: -10,
+      top: 0,
       bottom: 10
     },
   };
@@ -134,9 +145,6 @@ function missingIconLoader(map, e) {
       console.log("No shield defined for: " + network + "=" + ref);
       return;
     }
-
-//    scaleW = shield.data.width / width;
-//    scaleH = shield.data.height / height;
 
     loadShield(ctx, shield);
 
