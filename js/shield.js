@@ -16,47 +16,57 @@ function initShields(map) {
   shields["US:I"] = {
     backgroundImage: shieldImages.shield40_us_interstate,
     textColor: "white",
-    font2: "bold 52px Arial",
-    font3: "bold 38px Arial",
-    textX: 0.5,
-    textY: 0.56,
+    padding: {
+      left: 10,
+      right: 10,
+      top: 1,
+      bottom: 3
+    },
   };
 
   shields["US:US"] = {
     backgroundImage: shieldImages.shield40_us_us,
     textColor: "black",
-    font2: "bold 56px Arial",
-    font3: "bold 38px Arial",
-    textX: 0.5,
-    textY: 0.56,
+    padding: {
+      left: 10,
+      right: 10,
+      top: -10,
+      bottom: 10
+    },
   };
 
   shields["US:US:Historic"] = {
     backgroundImage: shieldImages.shield40_us_us,
     textColor: "black",
-    font2: "bold 56px Arial",
-    font3: "bold 38px Arial",
-    textX: 0.5,
-    textY: 0.56,
+    padding: {
+      left: 10,
+      right: 10,
+      top: -10,
+      bottom: 10
+    },
     colorLighten: "#613214",
   };
 
   shields["US:PA"] = {
     backgroundImage: shieldImages.shield40_us_pa,
     textColor: "black",
-    font2: "bold 52px Arial",
-    font3: "bold 38px Arial",
-    textX: 0.5,
-    textY: 0.6,
+    padding: {
+      left: 10,
+      right: 10,
+      top: -10,
+      bottom: 10
+    },
   };
 
   shields["US:PA:Turnpike"] = {
     backgroundImage: shieldImages.shield40_us_pa_turnpike,
     textColor: "white",
-    font2: "bold 52px Arial",
-    font3: "bold 38px Arial",
-    textX: 0.5,
-    textY: 0.56,
+    padding: {
+      left: 10,
+      right: 10,
+      top: -10,
+      bottom: 10
+    },
   };
 
   shields["US:PA:Belt"] = {
@@ -83,17 +93,24 @@ function missingIconLoader(map, e) {
 
   var width = 20;
   var height = 20;
-  var scaleH = 1;
-  var scaleW = 1;
   var colorLighten = null;
 
   var c = document.createElement("canvas");
+  c.width = 80;
+  c.height = 80;
+
+  var scaleH = height/c.height;
+  var scaleW = width/c.width;
+
   var ctx = c.getContext("2d");
   ctx.imageSmoothingQuality = "high";
   ctx.mozImageSmoothingEnabled = true;
   ctx.webkitImageSmoothingEnabled = true;
   ctx.msImageSmoothingEnabled = true;
   ctx.imageSmoothingEnabled = true;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.font = "bold 16px Arial";
 
   if (shields[network] != null) {
     var shieldDef = shields[network];
@@ -118,26 +135,44 @@ function missingIconLoader(map, e) {
       return;
     }
 
-    scaleW = shield.data.width / width;
-    scaleH = shield.data.height / height;
+//    scaleW = shield.data.width / width;
+//    scaleH = shield.data.height / height;
 
     loadShield(ctx, shield);
 
     if (shieldDef.notext != true) {
       ctx.fillStyle = shieldDef.textColor;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      if (ref.length <= 2) {
-        ctx.font = shieldDef.font2;
-      } else {
-        ctx.font = shieldDef.font3;
-      }
-      ctx.fillText(
-        ref,
-        width * scaleW * shieldDef.textX,
-        height * scaleH * shieldDef.textY,
-        width * scaleW
-      );
+
+      var padding = shieldDef.padding || {};
+      var padTop = padding.top || 0;
+      var padBot = padding.bottom || 0;
+      var padLeft = padding.left || 0;
+      var padRight = padding.right || 0;
+
+      var metrics = ctx.measureText(ref);
+      var textWidth = metrics.width;
+      var textHeight =
+          metrics.actualBoundingBoxAscent+
+          metrics.actualBoundingBoxDescent;
+
+      var desiredWidth = c.width-padLeft-padRight;
+      var scaleWidth = desiredWidth/textWidth;
+
+      var desiredHeight = c.height-padTop-padBot;
+      var scaleHeight = desiredHeight/textHeight;
+      var desiredRenderHeight = (c.height-padTop-padBot)/scaleHeight;
+      scaleHeight = Math.min(scaleWidth,scaleHeight);
+
+      var renderHeight = desiredHeight/scaleHeight;
+
+      var vBaselineOffset = (desiredRenderHeight - renderHeight) / 2;
+
+      ctx.scale(scaleWidth, scaleHeight);
+      ctx.fillText(ref,
+          (padLeft + 0.5*desiredWidth)/scaleWidth,
+          (padTop)/scaleHeight -vBaselineOffset,
+          80);
+      ctx.scale(1/scaleWidth, 1/scaleHeight);
     }
   } else if (ref == "") {
     return;
@@ -148,15 +183,6 @@ function missingIconLoader(map, e) {
         ctx.fillRect(0, 0, 20, 20);
         ctx.lineWidth = 2;
         ctx.strokeRect(0, 0, 20, 20);
-
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        if (ref.length <= 2) {
-          ctx.font = "bold 16px Arial";
-        } else {
-          ctx.font = "bold 10px Arial";
-        }
         ctx.fillText(ref, width * 0.5, height * 0.58, width);
       }
     }
@@ -164,7 +190,7 @@ function missingIconLoader(map, e) {
 
   var scaleCanvas = document.createElement("canvas");
   var scaleCtx = scaleCanvas.getContext("2d");
-  scaleCtx.scale(1 / scaleW, 1 / scaleH);
+  scaleCtx.scale(scaleH, scaleW);
   scaleCtx.drawImage(c, 0, 0);
 
   if (colorLighten != null) {
