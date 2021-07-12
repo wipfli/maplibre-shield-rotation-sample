@@ -52,13 +52,13 @@
         zoom: 1,
         pitch: 0,
         center: [0, 0],
-        glyphs: "http://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+        glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
         layers: americanaLayers,
-        sprite: new URL("/sprites/sprite", window.location.origin).href,
+        sprite: "https://zelonewolf.github.io/maplibre-shield-rotation-sample/sprites/sprite",
         bearing: 0,
         sources: {
           openmaptiles: {
-            url: "http://localhost:8080/data/v3.json",
+            url: "https://zelonewolf.github.io/maplibre-shield-rotation-sample/data/v3.json",
             type: "vector",
           },
           maptiler_attribution: {
@@ -81,8 +81,8 @@
         hash: true,
         antialias: true,
         style: style,
-        center: [-74.5, 40], // starting position [lng, lat]
-        zoom: 8, // starting zoom
+        center: [-86.166, 39.7925], // starting position [lng, lat]
+        zoom: 10, // starting zoom
       });
 
       map.on("styleimagemissing", function (e) {
