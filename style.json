@@ -35,11 +35,20 @@
                 ]
             ],
             "layout": {
+                "text-font": [
+                    "Metropolis Light"
+                ],
+                "text-size": 20,
                 "text-field": [
                     "format",
                     [
                         "image",
                         "shield_US:I=70"
+                    ],
+                    " ",
+                    [
+                        "image",
+                        "shield_US:US=35"
                     ]
                 ],
                 "text-anchor": "center",
